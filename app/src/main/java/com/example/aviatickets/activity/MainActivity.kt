@@ -20,4 +20,30 @@ class MainActivity : AppCompatActivity() {
             .commit()
 
     }
+    interface ApiService {
+        @GET("your_endpoint")
+        fun getOffers(): Call<List<Offer>>
+    }
+    val retrofit = Retrofit.Builder()
+        .baseUrl("BASE_URL") // Установите базовый URL
+        .addConverterFactory(GsonConverterFactory.create()) // Используйте Gson для сериализации данных
+        .build()
+
+    val apiService = retrofit.create(ApiService::class.java)
+
+    apiService.getOffers().enqueue(object : Callback<List<Offer>> {
+        override fun onResponse(call: Call<List<Offer>>, response: Response<List<Offer>>) {
+            if (response.isSuccessful) {
+                // Обновление UI с полученными данными
+                response.body()?.let { offers ->
+                    // Передайте список offers в адаптер RecyclerView
+                }
+            }
+        }
+
+        override fun onFailure(call: Call<List<Offer>>, t: Throwable) {
+            // Обработка ошибки запроса
+        }
+    })
+
 }

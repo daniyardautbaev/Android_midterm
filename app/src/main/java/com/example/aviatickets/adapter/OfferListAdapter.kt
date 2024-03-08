@@ -72,4 +72,48 @@ class OfferListAdapter : RecyclerView.Adapter<OfferListAdapter.ViewHolder>() {
         )
 
     }
+    class OfferDiffCallback : DiffUtil.ItemCallback<Offer>() {
+        override fun areItemsTheSame(oldItem: Offer, newItem: Offer): Boolean {
+            // Ваша логика для определения, являются ли объекты одним и тем же предложением
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Offer, newItem: Offer): Boolean {
+            // Ваша логика для определения, изменились ли данные предложения
+            return oldI tem == newItem
+        }
+    }
+    class OfferAdapter : RecyclerView.Adapter<OfferViewHolder>() {
+        private var offers: List<Offer> = listOf()
+
+        fun updateOffers(newOffers: List<Offer>) {
+            offers = newOffers
+            notifyDataSetChanged() // Обновление RecyclerView
+        }
+        import androidx.recyclerview.widget.ListAdapter
+
+        class OfferAdapter : ListAdapter<Offer, OfferViewHolder>(OfferDiffCallback()) {
+
+            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OfferViewHolder {
+                // Create ViewHolder
+            }
+
+            override fun onBindViewHolder(holder: OfferViewHolder, position: Int) {
+                val offer = getItem(position)
+                // Bind data to ViewHolder
+            }
+            fun sortOffersByPrice(offers: List<Offer>): List<Offer> {
+                return offers.sortedBy { it.price }
+            }
+
+            fun sortOffersByDuration(offers: List<Offer>): List<Offer> {
+                return offers.sortedBy { it.duration }
+            }
+
+        }
+
+
+    }
+
+
 }
